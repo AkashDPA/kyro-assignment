@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Schedule | KYRO</title>
+    <!-- booststrap and fontawesome -->
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script defer src="assets/js/font-awesome-solid.js"></script>
+    <script defer src="assets/js/fontawesome.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar sticky-top">
+        <div class="container-fluid justify-content-start">
+            <div class="logo-container">
+                <img src="assets/img/kyro-logo.png" class="w-75" alt="KYRO">
+            </div>
+            <div class="col text-end text-md-start">
+                <button type="button" id="sidebarCollapse" class="btn">
+                    <i class="fas fa-bars fa-2x"></i>
+                </button>
+                <img src="" class="rounded-circle bg-warning float-end user-thumbnail" alt="DH">
+            </div>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a>
+                        <i class="fas fa-calendar-alt"></i>
+                        Schedule Update
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-dollar-sign"></i>
+                        Budget Meeting
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-chart-bar"></i>
+                        Dashboards
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-file-alt"></i>
+                        Docs
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="fas fa-exchange-alt"></i>
+                        Project Change Request
+                    </a>
+                </li>
+                <li>
+                    <a href="#forms" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-newspaper"></i>
+                        Forms
+                    </a>
+                    <ul class="collapse list-unstyled" id="forms">
+                        <li>
+                            <a href="#">Form 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Form 2</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#tools" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-toolbox"></i>
+                        Tools
+                    </a>
+                    <ul class="collapse list-unstyled" id="tools">
+                        <li>
+                            <a href="#">Tool 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Tool 2</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Content  wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Page Content -->
+            <div id="page-content">
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jquery and bootstrap js -->
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/popper.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #page-content-wrapper').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+
+</html>
