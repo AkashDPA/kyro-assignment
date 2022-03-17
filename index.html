@@ -10,6 +10,7 @@
     <!-- booststrap and fontawesome -->
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/daterangepicker.css">
     <script defer src="assets/js/font-awesome-solid.js"></script>
     <script defer src="assets/js/fontawesome.js"></script>
 
@@ -99,8 +100,90 @@
         <!-- Content  wrapper-->
         <div id="page-content-wrapper">
             <!-- Page Content -->
-            <div id="page-content">
+            <h3>Schedule</h3>
+            <div id="page-content" class="bg-white p-4">
+                <div class="container-fluid pb-4">
+                    <form id="filter-form" class="row" action="#" onsubmit="return filterData(this)">
+                        <div class="col-6 col-md-3 my-2">
+                            <select name="name" id="filter-name" class="form-select">
+                                <option value="" disabled hidden selected>Filter By Name</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 my-2">
+                            <select name="project" id="filter-project" class="form-select">
+                                <option value="" disabled hidden selected>Filter By Project</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3 my-2">
+                            <div>
+                                <input type="text" name="date_range" id="filter-date-range" placeholder="Filter By Project"  class="form-control">
+                            </div>
+                        </div>
 
+                        <div class="col-6 col-md-3 my-2 d-flex">
+                            <button class="btn btn-sm btn-primary mx-2 px-4">
+                                APPLY FILTER
+                            </button>
+                            <button type="reset" class="btn btn-sm btn-light mx-2 border-3 border-bottom">
+                                RESET
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+                <h2>Collapsible Sidebar Using Bootstrap 4</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+
+                <div class="line"></div>
+
+                <h2>Lorem Ipsum Dolor</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+
+                <div class="line"></div>
+
+                <h2>Lorem Ipsum Dolor</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
+
+                <div class="line"></div>
+
+                <h3>Lorem Ipsum Dolor</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.</p>
             </div>
         </div>
     </div>
@@ -111,6 +194,11 @@
     <script src="assets/js/popper.js"></script>
     <script src="assets/js/bootstrap.js"></script>
 
+    <!-- date range picker dependencies -->
+
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/daterangepicker.min.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
@@ -118,7 +206,18 @@
                 $('.collapse.in').toggleClass('in');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
+
+            $("#filter-date-range").daterangepicker()
+            $("#filter-date-range").val("")
         });
+
+        function filterData(e) {
+            var name = $("#filter-name").val()
+            var project = $("#filter-project").val()
+            var date_range = $("#filter-date-range").val()
+            console.log(name, project, date_range);
+            return false;
+        }
     </script>
 </body>
 
