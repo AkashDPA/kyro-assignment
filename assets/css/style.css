@@ -3,7 +3,7 @@
     --lightblue: #7386D5;
     --black: #000;
     --grey: #fafafa;
-    --grey-darker: #808080;
+    --grey-lighter: #f3f3f3;
     --yellow:#ffa500;
     --grey-text: #818594;
     --color-page-container: #edf1f7;
@@ -58,6 +58,13 @@ a:focus {
     width: 100%;
     position: relative;
 }
+
+.category{
+    background-color: var(--grey-lighter);
+    padding: 10px 10px;
+    margin: 0px 5px;
+}
+
 
 /* ---------------------------------------------------
     SIDEBAR STYLE
