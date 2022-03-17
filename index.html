@@ -136,18 +136,56 @@
 
                 <!-- Data Cards -->
                 <div>
-                    <div class="container-fluid d-none d-md-flex d-flex">
-                        <div class="col-6 col-md-4 my-2 category">
+                    <div class="container-fluid d-none d-sm-flex d-flex">
+                        <div class="col-6 col-sm-4 my-2 category">
                             <i class="fas fa-file-alt text-primary"></i>
                             To do
                         </div>
-                        <div class="col-6 col-md-4 my-2 category">
+                        <div class="col-6 col-sm-4 my-2 category">
                             <i class="fas fa-circle-notch text-warning"></i>
                             In Progress
                         </div>
-                        <div class="col-6 col-md-4 my-2 category">
+                        <div class="col-6 col-sm-4 my-2 category">
                             <i class="fas fa-check-square text-success"></i>
                             Completed
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="px-4 py-2">
+                        <span id="person-name">Please Above Use Filter</span>
+
+                        <small id="item-count" class="tex-muted"></small>
+                    </p>
+                </div>
+                <div id="cards-holder" class="">
+                    <div class="container-fluid">
+                        <div class="col col-sm-4 bg-light order-0">
+                            <div class="my-2 d-block d-sm-none category">
+                                <i class="fas fa-file-alt text-primary"></i>
+                                To do
+                            </div>
+                            <div id="to-do-cards-holder">
+
+                            </div>
+                        </div>
+                        <div class="col col-sm-4 bg-light order-1">
+                            <div class="my-2 d-block d-sm-none category">
+                                <i class="fas fa-circle-notch text-warning"></i>
+                                In Progress
+                            </div>
+                            <div id="in-progress-cards-holder">
+
+                            </div>
+                        </div>
+                        <div class="col col-sm-4 bg-light order-2">
+                            <div class="my-2 d-block d-sm-none category">
+                                <i class="fas fa-check-square text-success"></i>
+                                Completed
+                            </div>
+                            <div id="completed-cards-holder">
+
+                            </div>
                         </div>
                     </div>
                 </div>
