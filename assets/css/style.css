@@ -1,13 +1,15 @@
 :root{
     --white: #fff;
-    --lightblue: #7386D5;
+    --light-blue: #7386D5;
     --black: #000;
     --grey: #fafafa;
     --grey-lighter: #f3f3f3;
-    --yellow:#ffa500;
-    --grey-text: #818594;
-    --color-page-container: #edf1f7;
-    --color-card-bg:#ffa500;
+    --grey-darker: #cacaca;
+    --yellow-darker:#f0a519;
+    --grey-text: #6c6d70;
+    --color-page-container: #e5ebf5;
+    --color-card-bg:#e3e9f3;
+    --color-card-border: #8CA2FF;
 }
 
 body {
@@ -17,9 +19,7 @@ body {
 
 p {
     font-family: 'Poppins', sans-serif;
-    /* font-size: 1.1em; */
     font-weight: 300;
-    line-height: 1.7em;
 }
 
 a,
@@ -64,10 +64,47 @@ a:focus {
     margin: 0px 5px;
 }
 
-#cards-holder{
-    background-color: --var(--grey);
+#to-do-cards-holder, #in-progress-cards-holder, #completed-cards-holder{
+    background-color: var(--grey);
+    padding: 0.5rem;
 }
 
+.badge{
+    font-size: 0.9rem;
+    font-weight: normal;
+    margin-top: 2px;
+}
+
+.bg-grey{
+    color: #000;
+    background-color: var(--grey-darker);
+}
+.bg-yellow{
+    background-color: var(--yellow-darker);
+}
+.card{
+    background-color: var(--color-card-bg);
+    font-size: 0.9rem;
+    color: var(--grey-text);
+    border-left: 5px solid var(--color-card-border);
+    margin: 5px 0px;
+}
+
+.card p{
+    line-height: 0.5;
+}
+
+.project-name{
+    font-size: 1rem;
+    font-weight:500;
+    color: #000;
+}
+
+.predication-gradient{
+    color: #fff;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(54,193,114,1) 0%, rgb(34, 201, 137) 17%, rgba(20,223,220,1) 38%, rgba(22,209,224,1) 57%, rgba(22,189,224,1) 69%, rgba(14,187,241,1) 85%); 
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -110,12 +147,12 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-    color: var(--lightblue);
+    color: var(--light-blue);
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: var(--lightblue);
+    color: var(--light-blue);
 }
 
 a[data-toggle="collapse"] {

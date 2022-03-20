@@ -26,7 +26,7 @@
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-bars fa-2x"></i>
                 </button>
-                <img src="" class="rounded-circle bg-warning float-end user-thumbnail" alt="DH">
+                <img src="" class="rounded-circle bg-yellow float-end user-thumbnail" alt="DH">
             </div>
         </div>
     </nav>
@@ -100,13 +100,13 @@
         <!-- Content  wrapper-->
         <div id="page-content-wrapper">
             <!-- Page Content -->
-            <h3>Schedule</h3>
+            <h4>Schedule</h4>
             <div id="page-content" class="bg-white p-4">
                 <!-- Filter -->
                 <div class="container-fluid pb-4">
-                    <form id="filter-form" class="row" action="#" onsubmit="return filterData(this)">
+                    <form id="filter-form" class="row" action="#" onsubmit="applyFilter(); return false;">
                         <div class="col-6 col-md-3 my-2">
-                            <select name="name" id="filter-name" class="form-select">
+                            <select name="name" id="filter-name" class="form-select" required>
                                 <option value="" disabled hidden selected>Filter By Name</option>
                             </select>
                         </div>
@@ -123,10 +123,11 @@
                         </div>
 
                         <div class="col-6 col-md-3 my-2 d-flex">
-                            <button class="btn btn-sm btn-primary mx-2 px-4">
+                            <button type="submit" class="btn btn-sm btn-primary mx-2 px-4">
                                 APPLY FILTER
                             </button>
-                            <button type="reset" class="btn btn-sm btn-light mx-2 border-3 border-bottom">
+                            <button type="reset" class="btn btn-sm btn-light mx-2 border-3 border-bottom"
+                                onclick="$('#filter-name').val(''); applyFilter()">
                                 RESET
                             </button>
                         </div>
@@ -159,8 +160,8 @@
                     </p>
                 </div>
                 <div id="cards-holder" class="">
-                    <div class="container-fluid">
-                        <div class="col col-sm-4 bg-light order-0">
+                    <div id="cards-holder-div" class="container-fluid row">
+                        <div class="col col-md-4 order-0">
                             <div class="my-2 d-block d-sm-none category">
                                 <i class="fas fa-file-alt text-primary"></i>
                                 To do
@@ -169,7 +170,7 @@
 
                             </div>
                         </div>
-                        <div class="col col-sm-4 bg-light order-1">
+                        <div class="col col-md-4 order-1">
                             <div class="my-2 d-block d-sm-none category">
                                 <i class="fas fa-circle-notch text-warning"></i>
                                 In Progress
@@ -178,7 +179,7 @@
 
                             </div>
                         </div>
-                        <div class="col col-sm-4 bg-light order-2">
+                        <div class="col col-md-4 order-2">
                             <div class="my-2 d-block d-sm-none category">
                                 <i class="fas fa-check-square text-success"></i>
                                 Completed
@@ -193,6 +194,24 @@
         </div>
     </div>
 
+    <!-- Notes Modal -->
+    <div class="modal fade" id="notes-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notes-modal-title">Modal title</h5>
+                </div>
+                <div class="modal-body" id="notes-modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick='$("#notes-modal").modal("hide")'>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom js -->
+    <script src="assets/js/main.js"></script>
 
     <!-- jquery and bootstrap js -->
     <script src="assets/js/jquery.js"></script>
@@ -200,28 +219,164 @@
     <script src="assets/js/bootstrap.js"></script>
 
     <!-- date range picker dependencies -->
-
     <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/daterangepicker.min.js"></script>
 
     <script type="text/javascript">
+        let sheduleClassInstance = null; //variable to store schedule class object
+
         $(document).ready(function () {
+            //UI sliding sidebar
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar, #page-content-wrapper').toggleClass('active');
                 $('.collapse.in').toggleClass('in');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
 
-            $("#filter-date-range").daterangepicker()
+            //apply daterange picker
+            $("#filter-date-range").daterangepicker({ locale: { format: "DD/MM/YYYY" } })
             $("#filter-date-range").val("")
+
+            //resposive card holder
+            $(window).resize(function () {
+                var ww = document.body.clientWidth;
+                if (ww < 740)
+                    $('#cards-holder-div').removeClass('row');
+                else
+                    $('#cards-holder-div').addClass('row');
+
+            });
+
+            //get data for filter section
+            $.ajax({
+                type: 'GET',
+                url: '/api/schedule_data.json',
+                dataType: "json",
+                success: function (data) {
+                    sheduleClassInstance = new Schedule_Class(data)
+                    fillFilterForm(data)
+                    appendCards(data)
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert("Error while loading data")
+                }
+            });
         });
 
-        function filterData(e) {
+        //apply person names, project names as option in filter form
+        function fillFilterForm(data) {
+            //names
+            var person_names = sheduleClassInstance.getPersonNames()
+            var optionsHTML = '<option value="" disabled hidden selected>Filter By Name</option>'
+            for (let name of person_names.values()) {
+                optionsHTML += '<option value="' + name + '">' + name + '</option>'
+            }
+            document.getElementById("filter-name").innerHTML = optionsHTML
+
+            //projects
+            var project_names = sheduleClassInstance.getProjectNames()
+            var optionsHTML = '<option value="" disabled hidden selected>Filter By Project</option>'
+            for (let name of project_names.values()) {
+                optionsHTML += '<option value="' + name + '">' + name + '</option>'
+            }
+            document.getElementById("filter-project").innerHTML = optionsHTML
+        }
+
+        //Apply filter button triggered
+        function applyFilter() {
             var name = $("#filter-name").val()
-            var project = $("#filter-project").val()
+            var project_name = $("#filter-project").val()
             var date_range = $("#filter-date-range").val()
-            console.log(name, project, date_range);
+
+            $("#person-name").text(name)
+            // get data from API;
+            $.ajax({
+                type: 'GET',
+                url: '/api/schedule_data.json',
+                data: {
+                    'person_name': name,
+                    'project_name': project_name,
+                    'date_range': date_range
+                },
+                dataType: "json",
+                success: function (data) {
+                    // since no filteration at backend applying it here
+                    var filteredData = data.filter(x => {
+                        return x.person_name == name && (project_name != null ? x.project_name == project_name : true)
+                    })
+                    appendCards(filteredData)
+                },
+                error: function (err) {
+                    console.log(err);
+                    alert("Error while loading data")
+                }
+            });
             return false;
+        }
+
+        //Appending cards to container
+        function appendCards(data) {
+            var todoCardsHTML = ''
+            var progressingCardsHTML = ''
+            var completedCardsHTML = ''
+
+            data.forEach(ele => {
+                var cardHTML = getCardHTML(ele)
+                if (ele.progress == 0)
+                    todoCardsHTML += cardHTML;
+                else if (ele.progress == 100)
+                    completedCardsHTML += cardHTML
+                else
+                    progressingCardsHTML += cardHTML
+            });
+
+            $("#to-do-cards-holder").html(todoCardsHTML)
+            $("#in-progress-cards-holder").html(progressingCardsHTML)
+            $("#completed-cards-holder").html(completedCardsHTML)
+        }
+
+        function getCardHTML(data) {
+            var progressBG = data.progress == 0 ? "bg-danger" : (data.progress == 100 ? "bg-success" : "bg-yellow")
+            var riskBG = data.risk == "no" ? "bg-secondary" : (data.risk == "low" ? "bg-success" : (data.risk == "medium" ? "bg-yellow" : "bg-danger"))
+            var notesTitle = data.project_name + " - Notes"
+            var html = '<div class="card">\
+                            <div class="card-body">\
+                                <p class="card-title project-name">'+ data.project_name + '</p>\
+                                <p class="status pt-1">'+ data.status_text + '</p>\
+                                <p class="department">'+ data.department + '</p>\
+                                <p class="date_range">'+ data.start_date + ' - ' + data.end_date + '</p>\
+                                <p>\
+                                    <span class="badge rounded-pill p-2 '+ progressBG + '">\
+                                        <i class="fas fa-chart-line"></i>\
+                                        | '+ data.progress.toFixed(2) + '%\
+                                    </span>\
+                                    <span class="badge rounded-pill p-2 bg-grey" onclick = \'showModal("'+ notesTitle + '","' + data.notes + '")\'>\
+                                        <i class="fas fa-clipboard-list"></i>\
+                                        | Notes\
+                                    </span>\
+                                    <span class="badge rounded-pill p-2 '+ riskBG + '">\
+                                        <i class="fas fa-exclamation-triangle"></i>\
+                                        | '+ data.risk + ' Risk\
+                                    </span>\
+                                </p>';
+            if (data.hasOwnProperty('predected_completion_days')) {
+                html += '<p>\
+                                <span class="predication-gradient rounded-pill p-2">\
+                                    <i class="fas fa-lightbulb"></i>\
+                                    | Preficted completion time : '+ data.predected_completion_days + '\
+                                </span>\
+                            </p>';
+            }
+
+            html += '</div></div>';
+            return html
+        }
+
+        function showModal(title, body) {
+            $("#notes-modal-title").html(title)
+            $("#notes-modal-body").html(body)
+            $("#notes-modal").modal('show')
         }
     </script>
 </body>
